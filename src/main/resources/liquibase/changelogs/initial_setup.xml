@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+    <changeSet author="tbelonosov" id="create-clinic-schema">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="clinic" tableName="schedule"/>
+            </not>
+        </preConditions>
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 path="../sql/create-clinic-schema.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet author="tbelonosov" id="create-doctor">
+    <preConditions onFail="MARK_RAN">
+        <not>
+            <tableExists schemaName="clinic" tableName="doctor"/>
+        </not>
+    </preConditions>
+    <sqlFile dbms="postgresql"
+             encoding="utf8"
+             path="../sql/doctor-create.sql"
+             relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet author="tbelonosov" id="create-schedule">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists schemaName="clinic" tableName="schedule"/>
+            </not>
+        </preConditions>
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 path="../sql/schedule-create.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet author="tbelonosov" id="populate-doctor">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="0">select count(*) from clinic.doctor</sqlCheck>
+        </preConditions>
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 path="../sql/populate-doctor.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet author="tbelonosov" id="populate-schedule">
+        <preConditions onFail="CONTINUE">
+            <sqlCheck expectedResult="0">select count(*) from clinic.schedule</sqlCheck>
+        </preConditions>
+        <sqlFile dbms="postgresql"
+                 encoding="utf8"
+                 path="../sql/populate-schedule.sql"
+                 relativeToChangelogFile="true"/>
+    </changeSet>
+
+</databaseChangeLog>

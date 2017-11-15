@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  care-service-provider:
+    image: "care-service-provider-sample"
+    ports:
+      - "9001:8080"
+      - "5005:5005"
+    depends_on:
+      - clinic-postgres
+    environment:
+      - _JAVA_OPTIONS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=5005
+
+  clinic-postgres:
+    image: "postgres"
+    ports:
+     - "5432:5432"
+    volumes:
+     - pgdata:/var/lib/postgresql/db
+    environment:
+     - POSTGRES_PASSWORD=123456
+     - POSTGRES_USER=postgres
+     - POSTGRES_DB=postgres
+
+volumes:
+    pgdata:
+      driver: local
