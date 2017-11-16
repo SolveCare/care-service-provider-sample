@@ -1,15 +1,39 @@
 package care.service.provider.controller;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import care.service.provider.entity.Doctor;
+import care.service.provider.entity.ScheduleSlot;
+import care.service.provider.service.ClinicService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/clinic")
+@RequestMapping(value = "/clinic", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class ClinicController {
 
-    @GetMapping
-    public String foo() {
-        return "hello world";
+    private ClinicService clinicService;
+
+    @Autowired
+    public ClinicController(ClinicService clinicService) {
+        this.clinicService = clinicService;
+    }
+
+    @GetMapping("/doctors")
+    public List<Doctor> getDoctors() {
+        return clinicService.getAllDoctors();
+    }
+
+    @GetMapping("/schedule")
+    public List<ScheduleSlot> getSchedule(@RequestParam String doctorId,
+                                          @RequestParam(required = false) String patientId) {
+        return clinicService.getDoctorSchedule(doctorId, patientId);
+    }
+
+    @PutMapping("/schedule/book")
+    public boolean bookScheduleSlot(@RequestParam String scheduleId,
+                                    @RequestParam String patientId) {
+        return clinicService.bookScheduleSlot(scheduleId, patientId);
     }
 }

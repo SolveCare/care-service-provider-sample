@@ -4,13 +4,17 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import java.util.List;
 
-@Data
-@Builder
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 
 @Entity
 @Table(name = "doctor", schema = "clinic")
 public class Doctor {
+
     @Id
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
     @GeneratedValue(generator = "uuid2")
@@ -31,4 +35,7 @@ public class Doctor {
 
     @Column
     private String password;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctorId")
+    private List<ScheduleSlot> schedule;
 }
