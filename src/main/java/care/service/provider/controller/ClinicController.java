@@ -37,7 +37,7 @@ public class ClinicController {
         return clinicService.addScheduleSlot(scheduleSlotDto);
     }
 
-    @PutMapping("/schedule/book")
+    @PutMapping("/schedule")
     public boolean bookScheduleSlot(@RequestParam String scheduleId,
                                     @RequestParam String patientId) {
         return clinicService.bookScheduleSlot(scheduleId, patientId);
