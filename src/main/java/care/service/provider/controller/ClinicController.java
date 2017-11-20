@@ -1,5 +1,6 @@
 package care.service.provider.controller;
 
+import care.service.provider.dto.ScheduleSlotDto;
 import care.service.provider.entity.Doctor;
 import care.service.provider.entity.ScheduleSlot;
 import care.service.provider.service.ClinicService;
@@ -26,9 +27,14 @@ public class ClinicController {
     }
 
     @GetMapping("/schedule")
-    public List<ScheduleSlot> getSchedule(@RequestParam String doctorId,
-                                          @RequestParam(required = false) String patientId) {
+    public List<ScheduleSlotDto> getSchedule(@RequestParam String doctorId,
+                                             @RequestParam(required = false) String patientId) {
         return clinicService.getDoctorSchedule(doctorId, patientId);
+    }
+
+    @PostMapping("/schedule")
+    public ScheduleSlotDto addScheduleSlot(@RequestBody ScheduleSlotDto scheduleSlotDto) {
+        return clinicService.addScheduleSlot(scheduleSlotDto);
     }
 
     @PutMapping("/schedule/book")
@@ -36,4 +42,5 @@ public class ClinicController {
                                     @RequestParam String patientId) {
         return clinicService.bookScheduleSlot(scheduleId, patientId);
     }
+
 }

@@ -1,9 +1,12 @@
 package care.service.provider.service;
 
+import care.service.provider.dto.ScheduleSlotDto;
 import care.service.provider.entity.Doctor;
 import care.service.provider.entity.ScheduleSlot;
 import care.service.provider.repository.DoctorRepository;
 import care.service.provider.repository.ScheduleRepository;
+import care.service.provider.transformer.DtoToScheduleTransformer;
+import care.service.provider.transformer.ScheduleToDtoTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,19 +18,32 @@ public class ClinicService {
 
     private DoctorRepository doctorRepository;
     private ScheduleRepository scheduleRepository;
+    private ScheduleToDtoTransformer scheduleToDtoTransformer;
+    private DtoToScheduleTransformer dtoToScheduleTransformer;
 
     @Autowired
-    public ClinicService(DoctorRepository doctorRepository, ScheduleRepository scheduleRepository) {
+    public ClinicService(DoctorRepository doctorRepository, ScheduleRepository scheduleRepository, ScheduleToDtoTransformer scheduleToDtoTransformer, DtoToScheduleTransformer dtoToScheduleTransformer) {
         this.doctorRepository = doctorRepository;
         this.scheduleRepository = scheduleRepository;
+        this.scheduleToDtoTransformer = scheduleToDtoTransformer;
+        this.dtoToScheduleTransformer = dtoToScheduleTransformer;
     }
 
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
 
-    public List<ScheduleSlot> getDoctorSchedule(String doctorId, String patientId) {
-        return scheduleRepository.findAllByDoctorIdAndPatientId(doctorId, patientId);
+    public List<ScheduleSlotDto> getDoctorSchedule(String doctorId, String patientId) {
+        List<ScheduleSlot> slots = scheduleRepository.findAllByDoctorIdAndPatientId(doctorId, patientId);
+
+        return scheduleToDtoTransformer.transformList(slots);
+    }
+
+    public ScheduleSlotDto addScheduleSlot(ScheduleSlotDto scheduleSlotDto) {
+        ScheduleSlot scheduleSlot = dtoToScheduleTransformer.transform(scheduleSlotDto);
+        scheduleSlot = scheduleRepository.save(scheduleSlot);
+
+        return scheduleToDtoTransformer.transform(scheduleSlot);
     }
 
     @Transactional(rollbackFor=Exception.class)

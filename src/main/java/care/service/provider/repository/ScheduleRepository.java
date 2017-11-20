@@ -16,6 +16,8 @@ public interface ScheduleRepository extends JpaRepository<ScheduleSlot, String> 
 
     List<ScheduleSlot> findAllByDoctorIdAndPatientId(String doctorId, String patientId);
 
+    ScheduleSlot save(ScheduleSlot slot);
+
     @Modifying
     @Transactional
     @Query("UPDATE ScheduleSlot slot SET slot.patientId = :patientId WHERE slot.id = :scheduleId AND slot.patientId IS NULL")
