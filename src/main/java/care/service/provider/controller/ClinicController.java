@@ -33,7 +33,7 @@ public class ClinicController {
     }
 
     @PostMapping("/schedule")
-    public ScheduleSlotDto addScheduleSlot(@RequestBody ScheduleSlotDto scheduleSlotDto) {
+    public ScheduleSlotDto createScheduleSlot(@RequestBody ScheduleSlotDto scheduleSlotDto) {
         return clinicService.addScheduleSlot(scheduleSlotDto);
     }
 
