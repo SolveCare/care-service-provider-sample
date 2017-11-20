@@ -20,7 +20,7 @@ public interface ScheduleRepository extends JpaRepository<ScheduleSlot, String> 
 
     @Modifying
     @Transactional
-    @Query("UPDATE ScheduleSlot slot SET slot.patientId = :patientId WHERE slot.id = :scheduleId AND slot.patientId IS NULL")
-    int setFixedPatientFor(@Param("scheduleId") String scheduleId,
-                           @Param("patientId") String patientId);
+    @Query("UPDATE ScheduleSlot scheduleSlot SET scheduleSlot.patientId = :patientId WHERE scheduleSlot.id = :scheduleId AND scheduleSlot.patientId IS NULL")
+    int setPatientFor(@Param("scheduleId") String scheduleId,
+                      @Param("patientId") String patientId);
 }

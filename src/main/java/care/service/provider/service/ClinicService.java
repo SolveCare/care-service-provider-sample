@@ -46,14 +46,16 @@ public class ClinicService {
         return scheduleToDtoTransformer.transform(scheduleSlot);
     }
 
-    @Transactional(rollbackFor=Exception.class)
-    public boolean bookScheduleSlot(String scheduleId, String patientId) {
-        Integer modifiedRows = scheduleRepository.setFixedPatientFor(scheduleId, patientId);
+    public ScheduleSlotDto bookScheduleSlot(String scheduleId, String patientId) {
+        Integer modifiedRows = scheduleRepository.setPatientFor(scheduleId, patientId);
 
         if (modifiedRows.equals(0)) {
             throw new RuntimeException(String.format("There are no free slots by id: %s", scheduleId));
         }
 
-        return true;
+        ScheduleSlot scheduleSlot = scheduleRepository.getOne(scheduleId);
+
+        return scheduleToDtoTransformer.transform(scheduleSlot);
     }
+
 }
