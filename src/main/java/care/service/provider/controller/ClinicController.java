@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping(value = "/clinic", produces = MediaType.APPLICATION_JSON_UTF8_VALUE, consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+@RequestMapping("/clinic")
 public class ClinicController {
 
     private ClinicService clinicService;
@@ -37,7 +37,7 @@ public class ClinicController {
         return clinicService.addScheduleSlot(scheduleSlotDto);
     }
 
-    @PutMapping("/schedule")
+    @PatchMapping("/schedule")
     public ScheduleSlotDto bookScheduleSlot(@RequestParam String scheduleId,
                                             @RequestParam String patientId) {
         return clinicService.bookScheduleSlot(scheduleId, patientId);
