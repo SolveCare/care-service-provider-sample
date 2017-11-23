@@ -33,7 +33,13 @@ public class ClinicService {
         return doctorRepository.findAll();
     }
 
-    public List<ScheduleSlotDto> getDoctorSchedule(String doctorId, String patientId) {
+    public List<ScheduleSlotDto> getDoctorFreeSchedule(String doctorId) {
+        List<ScheduleSlot> slots = scheduleRepository.findAllByDoctorId(doctorId);
+
+        return scheduleToDtoTransformer.transformList(slots);
+    }
+
+    public List<ScheduleSlotDto> getPatientSchedule(String patientId, String doctorId) {
         List<ScheduleSlot> slots = scheduleRepository.findAllByDoctorIdAndPatientId(doctorId, patientId);
 
         return scheduleToDtoTransformer.transformList(slots);

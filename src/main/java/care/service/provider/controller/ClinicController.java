@@ -26,10 +26,15 @@ public class ClinicController {
         return clinicService.getAllDoctors();
     }
 
-    @GetMapping("/schedule")
-    public List<ScheduleSlotDto> getSchedule(@RequestParam String doctorId,
-                                             @RequestParam(required = false) String patientId) {
-        return clinicService.getDoctorSchedule(doctorId, patientId);
+    @GetMapping("/schedule/doctor")
+    public List<ScheduleSlotDto> getDoctorFreeSchedule(@RequestParam String doctorId) {
+        return clinicService.getDoctorFreeSchedule(doctorId);
+    }
+
+    @GetMapping("/schedule/patient")
+    public List<ScheduleSlotDto> getPatientSchedule(@RequestParam String patientId,
+                                                    @RequestParam(required = false) String doctorId) {
+        return clinicService.getPatientSchedule(patientId, doctorId);
     }
 
     @PostMapping("/schedule")

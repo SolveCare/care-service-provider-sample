@@ -16,6 +16,8 @@ public interface ScheduleRepository extends JpaRepository<ScheduleSlot, String> 
 
     List<ScheduleSlot> findAllByDoctorIdAndPatientId(String doctorId, String patientId);
 
+    List<ScheduleSlot> findAllByDoctorId(String doctorId);
+
     ScheduleSlot save(ScheduleSlot slot);
 
     @Modifying
